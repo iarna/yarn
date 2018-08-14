@@ -446,6 +446,11 @@ export default class RequestManager {
     this.reporter.verbose(this.reporter.lang('verboseRequestStart', params.method, params.url));
 
     req.on('error', onError);
+    req.on('response', res => {
+      if (res.headers['npm-notice']) {
+        this.reporter.warn('notice: ' + res.headers['npm-notice']);
+      }
+    });
 
     const queue = params.queue;
     if (queue) {
